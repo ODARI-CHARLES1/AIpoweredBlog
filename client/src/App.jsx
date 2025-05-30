@@ -4,10 +4,10 @@ import Home from './Pages/Home'
 import Blog from './Pages/Blog'
 const App = () => {
   return (
-    <div className=''>
+    <div>
       <Routes>
          <Route path='/' element={<Home/>} />
-         <Route path='/blog' element={<Blog/>}/>
+         <Route path='/blog/:id' element={<Blog/>}/>
       </Routes>
     </div>
   )
