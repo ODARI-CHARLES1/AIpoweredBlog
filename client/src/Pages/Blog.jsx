@@ -16,6 +16,7 @@ const Blog = () => {
     const data=blog_data.find(item=>item._id===id)
     setData(data)
   }
+  
   const fetchComments=async ()=>{
     setComments(comments_data);
   }
