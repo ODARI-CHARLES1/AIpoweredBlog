@@ -3,6 +3,7 @@ import { assets } from '../assets/assets'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 const Header = () => {
+    
     useEffect(()=>{
         AOS.init({
             duration:1000,

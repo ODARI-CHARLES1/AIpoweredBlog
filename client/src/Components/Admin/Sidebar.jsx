@@ -19,7 +19,7 @@ const Sidebar = () => {
       {/* Toggle Button */}
       <button 
         onClick={handleExtend}
-        className="absolute -right-3 cursor-pointer top-6 bg-white border border-gray-300 shadow-md rounded-full p-1 z-10"
+        className="absolute -right-3 cursor-pointer top-[50%] bg-white border border-gray-300 shadow-md rounded-full p-1 z-10"
       >
         {extendSidebar ? <FaChevronLeft className="text-primary" /> : <FaChevronRight className="text-primary" />}
       </button>
