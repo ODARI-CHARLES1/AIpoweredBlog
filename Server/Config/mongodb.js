@@ -6,7 +6,7 @@ export const connectDB=async ()=>{
         mongoose.connection.on('connected',()=>{
             console.log("✅Database Connected.")
         })
-        await mongoose.connect(`${MONGO_URL}/quickblog`)
+        await mongoose.connect(`${MONGO_URL}`)
     } catch (error) {
         console.log("❌error occurred",error)
     }

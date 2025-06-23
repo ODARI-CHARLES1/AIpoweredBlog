@@ -1,15 +1,14 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import jwt from 'jsonwebtoken';
 
 import { connectDB } from './Config/mongodb.js';
 import adminRouter from './Routes/AdminRoute.js';
-import testRoute from './Routes/testRoute.js';
+import blogRouter from './Routes/blogRouter.js';
 dotenv.config(); // ✅ Load environment variables early
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(express.json());
@@ -20,10 +19,10 @@ connectDB();
 
 // Admin login route
 app.get('/',(req,res)=>{
-  res.send("API WORKING..")
+  res.send("WORKING WITH WASHINGTON..")
 })
 app.use('/api/admin',adminRouter)
-app.use('/',testRoute)
+app.use('/api/blog',blogRouter)
 
 // Start server
 app.listen(PORT, () => {
