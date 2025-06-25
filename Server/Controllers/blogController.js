@@ -21,7 +21,7 @@ export const addBlog = async (req, res) => {
     console.log(fileBuffer)
 
    const response = await imagekit.upload({
-  file: fileBuffer,
+  file: fileBuffer, 
   fileName: req.file.originalname,
   folder: "/quickblog/blogshere", // ✅ Valid format
    });

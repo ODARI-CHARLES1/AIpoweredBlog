@@ -3,9 +3,22 @@ import { } from '../assets/assets'
 import {motion} from 'motion/react';
 import AppContext from '../Context/AppContext';
 import BlogCard from './BlogCard';
+import { useAppContexts } from '../Hooks/useApp';
 const BlogList = () => {
-
-  const {blog_data,blogCategories,menu,setMenu}=useContext(AppContext)
+  const {blog,input}=useAppContexts()
+   const {blog_data,blogCategories,menu,setMenu}=useContext(AppContext)
+  const filteredBlogs=()=>{
+    if(input==""){
+      return blog.concat(blog_data)
+    }
+    else{
+      setMenu('All')
+     const joinedBlogs=blog.concat(blog_data)
+     let filtered= (joinedBlogs.filter((item)=>item.title.toLowerCase().includes(input)) || joinedBlogs.filter((item)=>item.title.toLowerCase().includes(input)))
+     return filtered
+  }
+}
+ 
   return (
     <div>
         <div className='flex justify-center gap-4 sm:gap-8 my-20 relative'>
@@ -32,8 +45,8 @@ const BlogList = () => {
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 mb-24 sm:mx-16 xl:mx-40
         '>
           {/* ----blog cards ---- */}
-          {blog_data
-            .filter((blog) => menu === "All" ? true : blog.category === menu)
+          {filteredBlogs()
+             .filter((blog) => menu === "All" ? true : blog.category === menu)
             .map((blog, index) => (
               <BlogCard key={index} blog={blog} />
           ))}

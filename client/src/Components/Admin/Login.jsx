@@ -1,40 +1,37 @@
-import React, { useContext, useState } from 'react'
-import AppContext from '../../Context/AppContext'
+import React, {useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify';
+import { useAppContexts } from '../../Hooks/useApp';
+import { toast } from 'react-hot-toast';
 
 const Login = () => {
-  
+    const {setToken,axios}=useAppContexts()
+
     const navigate=useNavigate()
-    const {setUserLoggedIn,useLoggedIn}=useContext(AppContext)
+    // const {setUserLoggedIn,useLoggedIn}=useContext(AppContext)
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
-    const handleSubmit=(e)=>{
+    const handleSubmit=async (e)=>{
         e.preventDefault()
-        console.log(password)
-        console.log(useLoggedIn)
-        if(useLoggedIn){
-          navigate('/admin')
-        }
-        else{
+        try {
+          const {data}=await axios.post('/api/admin/login',{email,password})
+          if(data.success){
+            setToken(data.token)
+            localStorage.setItem('token',data.token)
+              axios.defaults.headers.common['Authorization']= data.token
+          }
+          else{
+            toast.error(data.message)
+          }
 
-        if(password=='odari')
-        {
-            setUserLoggedIn(true)
-            toast.success("Logged In successfully.")
-            setTimeout(() => {
-              navigate("/admin")
-            }, 500);
+        } catch (error) {
+          toast.error(error.message)
         }
-        else{
-            setUserLoggedIn(false)
-            toast.error("Error! Wrong Password.")
-        }
-      }
+
+       
     }
   return (
     <div className='flex items-center-safe justify-center h-screen w-full'>
-      <ToastContainer/>
+   
        <div className='w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 rounded-lg '>
         <div className='flex flex-col my-4 items-center justify-center'>
           <h1 className='text-gray-900  font-bold text-center text-3xl'><span className='text-primary'>Admin</span> Login</h1>                                                           

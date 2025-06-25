@@ -5,8 +5,6 @@ const Footer = () => {
     const {footer_data}=useContext(AppContext)
     const navigate=useNavigate()
     const assets=useContext(AppContext)
-    console.log(footer_data)
-    console.log(assets)
   return (
     <div className='w-full bg-primary/5 mt-30 '>
     <div className='flex justify-between items-center  py-5 mx-8 sm:mx-20 xl:mx-32 flex-col'>
