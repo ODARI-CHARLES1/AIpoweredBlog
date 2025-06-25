@@ -17,7 +17,7 @@ const BlogCard = ({blog}) => {
   return (
         <div data-aos="fade-left" onClick={()=>navigate(`blog/${_id}`)} className='w-full roundeng-lg overflow-hidden shadow hover:scale-102 hover:shadow-primary/25 duration-300'>
             <div>
-                <img src={image} alt="image" />
+                <img src={image} className='w-full' alt="image" />
                 <span className='ml-5 mt-4 px-3 py-1 inline-block bg-primary/20 rounded-full text-primary text-xs'>{category}</span>
                 <div className='p-5'>
                     <h5 className='mb-2 font-medium text-gray-900'>{title}</h5>
