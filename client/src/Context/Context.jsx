@@ -1,7 +1,8 @@
 import { useState,useEffect } from 'react';
 import AppContext from './AppContext';
-import { dashboard_data } from '../assets/assets.js';
 import { blog_data, blogCategories,footer_data,assets } from '../assets/assets.js';
+import { useAppContexts } from '../Hooks/useApp.jsx';
+import { toast } from 'react-toastify';
 export const AppProvider = ( props ) => {//#endregion
    const [dashboardData,setDashboardData]=useState({
       blogs:0,
@@ -10,8 +11,17 @@ export const AppProvider = ( props ) => {//#endregion
       recentBlogs:[]
     })
 
+    const {axios}=useAppContexts()
+
     const fetchDashboard=async ()=>{
-        setDashboardData(dashboard_data)
+        try {
+          const {data}=axios.get('/api/admin/dashboard')
+          data.success?setDashboardData(data.dashboardData):toast.error(data.message)
+
+        } catch (error) {
+          toast.error(error.message)
+        }
+
       }
     
       useEffect(()=>{

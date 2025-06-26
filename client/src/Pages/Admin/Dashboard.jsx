@@ -4,6 +4,7 @@ import BlogTable from '../../Components/Admin/BlogTable'
 import AppContext from '../../Context/AppContext'
 const Dashboard = () => {
   const {dashboardData}=useContext(AppContext)
+
   return (
     <div className=' flex-1 p-4 md:p-10 bg-blue-50/50'>
         <div className='flex flex-wrap gap-4'>

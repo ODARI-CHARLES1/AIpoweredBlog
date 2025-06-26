@@ -2,10 +2,19 @@ import Blog from "../Models/blog.js";
 import imagekit from "../Config/imageKit.js";
 import fs from "fs";
 import Comment from "../Models/comment.js";
+import main from '../Config/Gemini.js'
+
 export const addBlog = async (req, res) => {
   try {
-    const { title, subTitle, description, category, isPublished } = JSON.parse(req.body.blog);
+    const {
+      title,
+      subTitle,
+      description,
+      category,
+      isPublished
+    } = JSON.parse(req.body.blog);
 
+    // Validate fields
     if (!title || !subTitle || !description || !category || isPublished === undefined) {
       return res.status(400).json({
         success: false,
@@ -13,29 +22,28 @@ export const addBlog = async (req, res) => {
       });
     }
 
+    // Validate image
     if (!req.file) {
-      return res.status(400).json({ success: false, message: "Image file is required" });
+      return res.status(400).json({
+        success: false,
+        message: "Image file is required"
+      });
     }
 
+    // Read file buffer from disk (if disk storage)
     const fileBuffer = fs.readFileSync(req.file.path);
-    console.log(fileBuffer)
 
-   const response = await imagekit.upload({
-  file: fileBuffer, 
-  fileName: req.file.originalname,
-  folder: "/quickblog/blogshere", // ✅ Valid format
-   });
-
-    // Optimize URL
-    const optimizedImageUrl = imagekit.url({
-      path: response.filePath,
-      transformation: [
-        { quality: "auto" },
-        { format: "webp" },
-        { width: 128 },
-      ],
+    // Upload to ImageKit
+    const response = await imagekit.upload({
+      file: fileBuffer,
+      fileName: req.file.originalname,
+      folder: "/quickblog/blogshere",
     });
 
+    // Store original or transformed URL (up to you)
+    const optimizedImageUrl = response.url; // or add ?tr=... params at display time
+
+    // Create blog
     const blog = await Blog.create({
       title,
       subTitle,
@@ -50,10 +58,16 @@ export const addBlog = async (req, res) => {
       message: "Blog added successfully",
       data: blog,
     });
+
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message});
+    console.error("Add Blog Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
+
 
 
 export const getAllBlog=async(req,res)=>{
@@ -127,11 +141,23 @@ export const addComment =async(req,res)=>{
 
 export const getBlogComments=async(req,res)=>{
     try {
-        const {blogId}=req.body
-        const comments=await Comment.find({blog:blogId,isApproved:true}).sort({createdAt: -1})
-        res.json({succes:true,comments})
+        const {blogId}=req.params
+        const comments=await Comment.find({blog:blogId,isApproved:true})//.sort({createdAt: -1})
+        res.json({success:true,comments})
     } catch (error) {
     return res.status(500).json({ success: false, error: error.message });
         
     }
+}
+
+export const generateContent=async(req,res)=>{
+  try {
+    const {prompt}=req.body
+    const responseContent=await main(prompt)
+    res.json({success:true,responseContent})
+
+    
+  } catch (error) {
+    res.json({success:true,message:error.message})
+  }
 }

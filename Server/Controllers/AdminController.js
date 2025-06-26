@@ -17,10 +17,10 @@ export const adminLogIn=async (req,res)=>{
 
 export const getAllBlogAdmin=async(req,res)=>{
     try {
-        const blogs=Blog.find({})
+        const blogs=await Blog.find({})
         res.status(200).json({success:true,blogs})
     } catch (error) {
-    return res.status(500).json({ success: false, error: error.message });
+    return res.json({ success: false, error: error.message });
     }
 }
 

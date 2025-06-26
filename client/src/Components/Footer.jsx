@@ -10,7 +10,7 @@ const Footer = () => {
     <div className='flex justify-between items-center  py-5 mx-8 sm:mx-20 xl:mx-32 flex-col'>
         <div className=' flex w-full justify-between py-1  md:flex-row flex-col'>
             <div className='flex flex-1/2 items-start justify-between flex-col gap-4' >
-                <img onClick={()=>navigate("/")} className='cursor-pointer' src={assets.assets.logo} alt="" />
+                <img onClick={()=>navigate("#")} className='cursor-pointer' src={assets.assets.logo} alt="" />
                 <p className='text-gray-500/70 pb-8 text-md max-w-md'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum unde quaerat eveniet cumque accusamus atque qui error quo enim fugiat?</p>
             </div>
             <div className='flex flex-1/2 justify-between '>

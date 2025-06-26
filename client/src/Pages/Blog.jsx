@@ -2,27 +2,68 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import { useParams } from 'react-router-dom'
-import { blog_data, comments_data } from '../assets/assets.js'
 import { assets } from '../assets/assets.js'
 import moment from 'moment'
+import { useAppContexts } from '../Hooks/useApp.jsx'
+import { toast } from 'react-hot-toast'
+import LoadingEffect from '../Components/LoadingSpinner.jsx'
 const Blog = () => {
   const {id}=useParams()
+  console.log(id)
+  const {axios}=useAppContexts()
   const [data,setData]=useState(null)
   const [comments,setComments]=useState([])
   const [name,setName]=useState("")
   const [content,setContent]=useState("")
 
   const fetchBlogData=async ()=>{
-    const data=blog_data.find(item=>item._id===id)
-    setData(data)
+    try {
+      const {data}=await axios.get(`/api/blog/${id}`)
+      if(data){
+        setData(data.blog)
+      }
+      else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      setTimeout(() => {
+         toast.error(error.message)
+      }, 10000);
+    }
   }
   
   const fetchComments=async ()=>{
-    setComments(comments_data);
+    try {
+      const {data}=await axios.get('/api/blog/comments',{blogId:id})
+      console.log(data)
+      if(data.success){
+        setComments(data.comments)
+
+      }
+      else{
+          toast.error(data.message)
+      }
+    } catch (error) {
+         toast.error(error.message)
+    }
   }
 
-  const addComment=(e)=>{
+  const addComment=async(e)=>{
     e.preventDefault();
+    try {
+      const {data}=await axios.post('/api/blog/add-comment',{blog:id,name,content})
+    if(data.success){
+      toast.success(data.message)
+      setName('')
+      setContent('')
+    }
+    else{
+      toast.error(data.message)
+    }
+    } catch (error) {
+      toast.error(error.message)
+    }
+   
   }
   useEffect(()=>{
     fetchBlogData();
@@ -39,7 +80,7 @@ const Blog = () => {
         <p className='inline-block py-1 px-4 rounded-full mb-6 border text-sm border-primary/35 bg-primary/5 font-medium text-primary'>Charles Odari</p>
       </div>
       <div className='mx-5 max-w-5xl md:mx-auto my-10 mt-6'>
-         <img src={data.image} alt="blog_data image"  className='rounded-3xl mb-5'/>
+         <img src={data.image} alt="blog_data image "  className='rounded-3xl mb-5 w-full'/>
          <div className='rich-text max-w-3xl mx-auto' dangerouslySetInnerHTML={{__html:data.description}}></div>
       </div>
 
@@ -82,6 +123,6 @@ const Blog = () => {
       </div>
       <Footer/>
     </div>
-  ): <div>Loading....</div>
+  ):<LoadingEffect/>
 }
 export default Blog

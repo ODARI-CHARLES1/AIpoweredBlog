@@ -12,11 +12,13 @@ import BlogList from './Pages/Admin/BlogList'
 import 'quill/dist/quill.snow.css'
 import {Toaster} from 'react-hot-toast'
 import { useAppContexts } from './Hooks/useApp'
+import { ToastContainer } from 'react-toastify'
 const App = () => {
   const {token}=useAppContexts()
   return (
     <div>
       <Toaster/>
+      <ToastContainer/>
       <Routes>
          <Route path='/' element={<Home/>} />
          <Route path='/blog/:id' element={<Blog/>}/>

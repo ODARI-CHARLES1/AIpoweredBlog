@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { useAnimate } from "motion/react";
 
 axios.defaults.baseURL=import.meta.env.VITE_BASE_URL
 
@@ -10,6 +11,7 @@ axios.defaults.baseURL=import.meta.env.VITE_BASE_URL
 export const AppContexts=createContext()
 
 export const AppProviders=({children})=>{
+    const navigate=useAnimate()
     const [token,setToken]=useState(null)
     const [blog,setBlogs]=useState([])
     const [input,setInput]=useState("")
@@ -17,7 +19,6 @@ export const AppProviders=({children})=>{
         try {
            const {data}= await axios.get('/api/blog/all')
            data.success?setBlogs(data.blogs):toast.error(data.message)
-           console.log(data)
         } catch (error) {
             toast.error(error.message)
         }
@@ -33,7 +34,7 @@ export const AppProviders=({children})=>{
     },[])
 
      
-    const value={token,blog,input,setInput,setToken,setBlogs,axios}
+    const value={token,blog,input,setInput,setToken,setBlogs,axios,navigate}
     return(
         <AppContexts.Provider value={value}>
             {children}

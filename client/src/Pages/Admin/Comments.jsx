@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { comments_data } from '../../assets/assets'
 import CommentTableItem from '../../Components/Admin/CommentTableItem'
+import { useAppContexts } from '../../Hooks/useApp'
+import { toast } from 'react-toastify'
 
 const Comments = () => {
   const [comments,setComments]=useState([])
   const [filter,setFitler]=useState([])
+  const {axios}=useAppContexts()
+
   const fetchComments=async ()=>{
-    setComments(comments_data)
+    try {
+      const {data}=await axios.get('/api/admin/comments')
+      data.success?setComments(data.comments):toast.error(data.message)
+    } catch (error) {
+      toast.error(error.message)
+    }
   }
-  console.log(comments_data)
   
   useEffect(()=>{
     fetchComments()

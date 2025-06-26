@@ -3,16 +3,18 @@ import Navbar from '../../Components/Navbar'
 import { Navigate, Outlet, useNavigate } from 'react-router-dom'
 import { assets } from '../../assets/assets'
 import Sidebar from '../../Components/Admin/Sidebar'
-import { toast, ToastContainer } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
+import { useAppContexts } from '../../Hooks/useApp'
 const Layout = () => {
-    const navigate=useNavigate();
+  const navigate=useNavigate()
+    const {axios,setToken}=useAppContexts()
     const logout=()=>{
-        
-        toast.dismiss("Logged Out.")
-        setTimeout(() => {
-          navigate("/")
-        }, 300);
+      localStorage.removeItem('token');
+      axios.defaults.headers.common['Authorization']=null;
+      setToken(null)
+      navigate('/')
     }
+  
   return (
     <>
       <div className='flex items-center justify-between py-2 h-[70px] px-4 border-b border-gray-200'>

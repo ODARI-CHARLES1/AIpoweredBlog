@@ -1,12 +1,12 @@
 import React, {useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+//import { useNavigate } from 'react-router-dom'
 import { useAppContexts } from '../../Hooks/useApp';
 import { toast } from 'react-hot-toast';
 
 const Login = () => {
     const {setToken,axios}=useAppContexts()
 
-    const navigate=useNavigate()
+    //const navigate=useNavigate()
     // const {setUserLoggedIn,useLoggedIn}=useContext(AppContext)
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')

@@ -13,7 +13,6 @@ const Sidebar = () => {
   const handleLinkActive=(index)=>{
         setActive(index)
     }
-  console.log(active)
   return (
     <div className={`${extendSidebar ? "w-60" : "w-20"} relative h-full transition-all duration-300 py-4 border-r border-gray-200 flex flex-col gap-4`}>
       {/* Toggle Button */}
