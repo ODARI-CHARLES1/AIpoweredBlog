@@ -19,7 +19,7 @@ connectDB();
 
 // Admin login route
 app.get('/',(req,res)=>{
-  res.send("WORKING WITH WASHINGTON..")
+  res.send("API WORKING....")
 })
 app.use('/api/admin',adminRouter)
 app.use('/api/blog',blogRouter)
