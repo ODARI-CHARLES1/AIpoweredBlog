@@ -1,16 +1,25 @@
 import React,{useEffect,useState} from 'react'
 import BlogTableBody from './BlogTableBody'
 import { dashboard_data } from '../../assets/assets'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 const BlogTable = () => {
-    const {dashboardData,setDashboardData}=useState({})
+    const {setDashboardData}=useState({})
     const fetchDashboard= async()=>{
-        setDashboardData(dashboard_data)
+       try {
+         const {data}=await axios.get('/api/admin/dasboard')
+        if(!data.success){
+            toast.error(data.message)
+        }
+        setDashboardData(data.DashboardData)
+        console.log(data.DashboardData)
+       } catch (error) {
+        toast.error(error.message)
+       }
     }
-      
       useEffect(()=>{
         fetchDashboard();
       })
-      console.log(dashboardData)
   return (
     <div className=' relative max-w-4xl overflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
         <table className='w-full text-sm text-gray-500'>
